@@ -13,6 +13,7 @@ public class Advent3{
         
         List<String> list = new ArrayList<>();
         int sum = 0;
+        int sum2 = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader("input3.txt"))) {
             for (String line; (line = br.readLine()) != null;) {
@@ -27,7 +28,14 @@ public class Advent3{
             sum+=matchValue(match(line));
         }
 
-        System.out.println(sum);
+        for(int i = 2 ; i<list.size();i+=3){
+            char x = match2(list.get(i), list.get(i-1), list.get(i-2));
+            sum2+=matchValue(x);
+        }
+
+
+        System.out.println("part 1 is " + sum);
+        System.out.println("part 2 is " + sum2);
     }
 
 
@@ -40,8 +48,6 @@ public class Advent3{
             values.put(alphabet[i], i+1);
             values.put(bigAlphabet[i], 1+alphabet.length+i);
         }
-
-        System.out.println(values.get('p'));
         return values.get(c);
 
     }
@@ -64,6 +70,30 @@ public class Advent3{
             }
         }
         return m;
+    }
+
+    public static char match2(String item,String item2, String item3){
+
+        char[] list1 = item.toCharArray();
+        char[] list2 = item2.toCharArray();
+        char[] list3 = item3.toCharArray();
+
+        char m = 'a';
+
+        for(char a: list1){
+            for(char b: list2 ){
+                for(char c: list3){
+                    if(a==b && b==c){
+                        m = a;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return m;
+
+        
     }
 
 }
