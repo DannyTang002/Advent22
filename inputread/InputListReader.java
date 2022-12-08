@@ -13,7 +13,6 @@ public class InputListReader {
     public InputListReader(String input){
         this.input = input;
     }
-
     public List<String>file(){
         List<String> list = new ArrayList<>();
         int sum = 0;
@@ -25,7 +24,6 @@ public class InputListReader {
             e.getStackTrace();
         }
         return list;
-
     }
 
 }
