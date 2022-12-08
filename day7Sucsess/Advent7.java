@@ -54,7 +54,6 @@ public class Advent7 {
         for (Entry<String, List<String>> entry : map.entrySet()) {
             //System.out.println(entry.getKey() + entry.getValue());
             values.add(value(entry.getValue()));
-            
         }
         int sum = values.stream().mapToInt(x->x).filter(x->x<=100000).sum();
         System.out.println(sum);
@@ -74,4 +73,3 @@ public class Advent7 {
         return sum;
     }
 }
-
