@@ -20,7 +20,7 @@ public class Advent7 {
     public static Stack<String> currentDirectories=  new Stack<>();
     public static void main(String[]args){
        
-        InputListReader reader = new InputListReader("input7.txt");
+        InputListReader reader = new InputListReader("day7Sucsess/input7.txt");
         List<String> files = reader.file();
         
         String currentDirectory = " ";

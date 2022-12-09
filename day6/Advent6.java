@@ -9,7 +9,7 @@ public class Advent6 {
 
     public static void main(String[]args){
         int count = 0;
-        InputListReader reader = new InputListReader("input6.txt");
+        InputListReader reader = new InputListReader("day6/input6.txt");
         List<String>file = reader.file();
         String input = file.get(0);
         char[]c = input.toCharArray();

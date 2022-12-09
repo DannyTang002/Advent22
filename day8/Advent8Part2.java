@@ -8,7 +8,7 @@ import inputread.InputListReader;
 public class Advent8Part2{
 
     public static void main(String[] args) {
-        InputListReader reader = new InputListReader("input8.txt");
+        InputListReader reader = new InputListReader("day8/input8.txt");
         List<String> list = reader.file();
         int sum = 0;
         int[][]grid = new int[list.size()][list.size()];

@@ -15,7 +15,7 @@ public class Advent3{
         int sum = 0;
         int sum2 = 0;
 
-        try (BufferedReader br = new BufferedReader(new FileReader("input3.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("day3/input3.txt"))) {
             for (String line; (line = br.readLine()) != null;) {
                 list.add(line);
                 

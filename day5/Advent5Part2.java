@@ -17,7 +17,7 @@ public class Advent5Part2 {
         Map<Integer, Stack<Character>> map = new TreeMap<>();
         List<String> list = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("input5.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("day5/input5.txt"))) {
             for (String line; (line = br.readLine()) != null;) {
                 list.add(line);
             }
