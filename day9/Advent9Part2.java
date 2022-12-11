@@ -10,19 +10,23 @@ import inputread.InputListReader;
 
 import java.awt.Point;
 
-public class Advent9 {
+public class Advent9Part2 {
 
     public static void main(String[] args) {
 
-        InputListReader reader = new InputListReader("day9/input9.txt");
+        InputListReader reader = new InputListReader("day9/test9.txt");
         List<String> files = reader.file();
         Set<Point> tailPositions = new HashSet<>();
-        List<Point> headPositions = new ArrayList<>();
+        List<Point> tails = new ArrayList<>();
 
         Point tail = new Point(0, 0);
         Point head = new Point(0, 0);
         tailPositions.add(new Point(0, 0));
+        tails.add(tail);
 
+        for(int i = 1; i<9;i++){
+            tails.add(new Point(0,0));
+        }
 
 
         for (String file : files) {
@@ -31,16 +35,16 @@ public class Advent9 {
             int move = Integer.parseInt(parts[1]);
             switch (command) {
                 case "D":
-                    moveY(head,tail, headPositions, move,tailPositions);
+                    moveY(head,tail, tails, move,tailPositions);
                     break;
                 case "U":
-                    moveY(head,tail, headPositions, -move,tailPositions);
+                    moveY(head,tail, tails, -move,tailPositions);
                     break;
                 case "R":
-                    moveX(head,tail, headPositions, move,tailPositions);
+                    moveX(head,tail, tails, move,tailPositions);
                     break;
                 case "L":
-                    moveX(head,tail, headPositions, -move,tailPositions);
+                    moveX(head,tail, tails, -move,tailPositions);
                     break;
                 default:
                     break;
@@ -50,8 +54,8 @@ public class Advent9 {
             //boolean corner =  checkCorner(head,tail);
           
         }
-        for (Point poss : tailPositions) {
-           System.out.println(poss.getX() + " " + poss.getY());
+        for (Point poss : tails) {
+           //System.out.println(poss.getX() + " " + poss.getY());
             
         }
         
@@ -69,8 +73,7 @@ public class Advent9 {
                 x--;
                 boolean corner =  checkCorner(head,tail);
                 head.move(x, (int)head.getY());
-                //System.out.println("head: " + head);
-                list.add(head);
+                System.out.println("head: " + head);
                 if(twoAway(head,tail)){
                     if(corner){
                         xt=x+1;
@@ -79,9 +82,11 @@ public class Advent9 {
                         xt--;
                     }
                     tail.move(xt, yt);
+
                     
                 }
-                tails.add(new Point(xt,yt));
+               // tails.add(new Point(xt,yt));
+               tailMoveX(list, -1, tails,xt,yt,checkAllCorners(list));
                 //System.out.println("tail: " + tail);
             }
         }else if(move>=0){
@@ -89,8 +94,7 @@ public class Advent9 {
                 x++;
                 boolean corner =  checkCorner(head,tail);
                 head.move(x, (int)head.getY());
-                //System.out.println("head: " + head);
-                list.add(head);
+                System.out.println("head: " + head);
                 if(twoAway(head,tail)){
                     if(corner){
                         xt=x-1;
@@ -98,10 +102,11 @@ public class Advent9 {
                     }else{
                         xt++;
                     }
-                    tail.move(xt, yt);
+                    
+                    tailMoveX(list, 1, tails,xt,yt,checkAllCorners(list));
                     
                 }
-                tails.add(new Point(xt,yt));
+                //tails.add(new Point(xt,yt));
                 //System.out.println("tail: " + tail);
             }
         }
@@ -110,14 +115,14 @@ public class Advent9 {
         int y = (int)head.getY();
         int yt= (int)tail.getY();
         int xt = (int)tail.getX();
+        boolean check= false;
         //System.out.println(twoAway(head, tail));
         if(move<=0){
             for(int i = 0; i<(-move); i++){
                 y--;
                 boolean corner =  checkCorner(head,tail);
                 head.move((int)head.getX(),y);
-                //System.out.println("head: " + head);
-                list.add(head);
+                System.out.println("head: " + head);
                 if(twoAway(head,tail)){
                     if(corner){
                         yt = y+1;
@@ -125,10 +130,11 @@ public class Advent9 {
                     }else{
                         yt--;
                     }
-                    tail.move(xt,yt);
                     
+                    tailMoveY(list, -1, tails,xt,yt,checkAllCorners(list));
+                    tail.move(xt,yt);
                 }
-                tails.add(new Point(xt,yt));
+                //tails.add(new Point(xt,yt));
                 //System.out.println("tail: " + tail);
             }
         }else if(move>=0){
@@ -136,8 +142,7 @@ public class Advent9 {
                 y++;
                 boolean corner =  checkCorner(head,tail);
                 head.move((int)head.getX(),y );
-                //System.out.println("head: " + head);
-                list.add(head);
+                System.out.println("head: " + head);
                 if(twoAway(head,tail)){
                     if(corner){
                         yt = y-1;
@@ -145,9 +150,12 @@ public class Advent9 {
                     }else{
                         yt++;
                     }
+                    
+                    
+                    tailMoveY(list, 1, tails,xt,yt,checkAllCorners(list));
                     tail.move(xt,yt);
                 }
-                tails.add(new Point(xt,yt));
+                //tails.add(new Point(xt,yt));
                 //System.out.println("tail: " + tail);
             }
         }
@@ -182,17 +190,73 @@ public class Advent9 {
                 
                 if(j==head.getX() && i==head.getY()){
                     check = true;
-                    //System.out.println(tail + "t corner: " + head );
+                    System.out.println(tail + "t corner: " + head );
                 }
             }
             //System.out.println();
         }
         return check;
-        
-
-
     }
 
+    public static void tailMoveX(List<Point> tails, int move,Set<Point>tailsP,int xt, int yt,boolean corner){
+        int y = yt;
+        tails.get(0).move(xt, yt);
+        for(int i=1; i<tails.size(); i++){
+            int x = (int)tails.get(i).getX();
+            System.out.println("pos:" + (i-1) + " " + tails.get(i-1));
+            System.out.println("pos:" + i + " " + tails.get(i));
+            
+            if(twoAway(tails.get(i-1),tails.get(i))){
+                if(corner){
+                    y = (int)tails.get(i-1).getY()+move;
+                    x+=move;
+                }else{
+                    x+=move;
+                    y= (int)tails.get(i).getY();
+                }
+                tails.get(i).move(x, y);
+               
+            }
+            
+        }
+        tailsP.add(new Point((int)tails.get(tails.size()-1).getX(),(int)tails.get(tails.size()-1).getY()));
+    }
 
+    public static void tailMoveY(List<Point> tails, int move,Set<Point>tailsP, int xt, int yt,boolean corner){
+        int x = xt;
+        tails.get(0).move(xt, yt);
+        for(int i=1; i<tails.size(); i++){
+            int y = (int)tails.get(i).getY();
+            System.out.println("pos:" + (i-1) + " " + tails.get(i-1));
+            System.out.println("pos:" + i + " " + tails.get(i));
+            
+            if(twoAway(tails.get(i-1),tails.get(i))){
+                if(corner){
+                    x = (int)tails.get(i-1).getX()+move;
+                    y+=move;
+                }else{
+                    y+=move;
+                    x= (int)tails.get(i).getX();
+                }
+                
+                tails.get(i).move(x, y);
+            }
+            corner=checkCorner(tails.get(i-1), tails.get(i));
+        }
+        tailsP.add(new Point((int)tails.get(tails.size()-1).getX(),(int)tails.get(tails.size()-1).getY()));
+    }
+
+    public static boolean checkAllCorners(List<Point> list){
+        boolean check = true;
+        for(int i = 1; i<list.size();i++){
+            if(checkCorner(list.get(i-1), list.get(i))){
+                check = true;
+                break;
+            }else{
+                check = false;
+            }
+        }
+        return check;
+    }
 }
 
