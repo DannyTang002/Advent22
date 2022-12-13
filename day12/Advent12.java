@@ -19,7 +19,7 @@ public class Advent12 {
 
     public static void main(String[] args) {
 
-        InputListReader read = new InputListReader("day12/input12.txt");
+        InputListReader read = new InputListReader("day12/text12.txt");
         String alfabet = "abcdefghijklmnopqrstuvwxyz";
         char[] alfabetSeq = alfabet.toCharArray();
         int sum = 0;
@@ -53,10 +53,8 @@ public class Advent12 {
             }
             System.out.println();
         }
-       
-
-        findPath(x, y, file.size(),file.get(0).length() );
-        System.out.println(xEnd + " " + yEnd);
+        
+        System.out.println(findPath(x, y, file.size(),file.get(0).length() ));
     }
 
     public static boolean[][]reach (int y, int x){
@@ -76,7 +74,11 @@ public class Advent12 {
         queue.add(new Point(x,y));
         boolean[][]reached = reach(c, r);
         reached[y][x]=true;
-        boolean end = false;
+        int currLayer = 1;
+        int nextLayer = 0;
+        int count = 0;
+
+
         outer:while(!queue.isEmpty()){
             Point current = queue.peek();
             x = (int)current.getX();
@@ -84,25 +86,27 @@ public class Advent12 {
             reached[y][x]=true;
             System.out.println(gridchar[y][x] + " position " + x + " ; " + y);
             queue.remove();
-            if(grid[y][x]==1000){
-                System.out.println(gridchar[y][x]);
-                break;
-            }
             for(int i = 0; i<4; i++){
                 int xn = x + dRow[i];
                 int yn = y+ dCol[i];
-                if( isValid(grid[1].length, grid.length, reached, xn, yn) ){
-                    if(grid[yn][xn]==grid[y][x]||grid[yn][xn]==(grid[y][x]+1)){
-                        Point next = new Point(xn,yn);
-                        queue.add(next);
-                        reached[yn][xn]= true;
-                    }
-                    
+                if( isValid(grid[1].length, grid.length, reached, xn, yn) && (grid[yn][xn]<=1+grid[y][x]) ){
+                    Point next = new Point(xn,yn);
+                    queue.add(next);
+                    if(gridchar[yn][xn]=='E'){
+                        System.out.println(gridchar[yn][xn]);
+                        System.out.println("HEJ");
+                        break outer;
+                    }      
+                    reached[yn][xn]= true;
+                    nextLayer++;
                 }
             }
-           
-
-
+            currLayer--;
+            if(currLayer==0){
+                currLayer=nextLayer;
+                nextLayer=0;
+                count++;
+            }
         }
         for(int i = 0; i<reached.length;i++){
             for(int j =0;j< reached[i].length;j++){
@@ -114,7 +118,7 @@ public class Advent12 {
             }
             System.out.println();
         }
-        return 1;
+        return count;
     }
 
     public static boolean isValid(int xmax,int ymax, boolean[][] grid,int x, int y ){
@@ -125,12 +129,5 @@ public class Advent12 {
         }else{
             return true;
         }
-
-
     }
-
-  
-
-   
-
 }
