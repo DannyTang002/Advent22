@@ -24,14 +24,11 @@ public class Advent10 {
         }
         
         for(String line: files){
-
             String[]parts = line.split(" ");
             String command = parts[0];
             if(command.equals("noop")){
                 draw(cycle, grid, x);
-                cycle++;
-                
-                
+                cycle++;     
             }else if(command.equals("addx")){
                 int value = Integer.parseInt(parts[1]);
                 for(int i= 0; i<2 ; i++){
@@ -62,7 +59,6 @@ public class Advent10 {
 
 
     public static String[][]draw (int cycle,String[][]grid,int value){
-        
       if(cycle<40){
         if(checkValue(value, cycle)){
             grid[0][cycle]="#";
@@ -113,6 +109,4 @@ public class Advent10 {
             return false;
         }
     }
-
-    
 }
