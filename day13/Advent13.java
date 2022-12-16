@@ -22,53 +22,58 @@ class Advent13{
             System.out.println();
             pairs.put(files.get(i-1),files.get(i));
         }
+        int sum = 0;
 
         for(Entry<String, String> t: pairs.entrySet()){
-            System.out.println(t.getKey() + "pair left");
-            System.out.println(t.getValue() + "pair right");   
+            sum+=compare(t.getKey(),t.getValue());
         }
     }
 
 
     public static int compare(String left, String right){
-        boolean value = false;
+        int value = 0;
         String startLeft = left.substring(0, left.length());
         String startRight = right.substring(0,right.length());
         String[]leftArray = startLeft.split(" , ");
         String[]rightArray = startRight.split(" , ");
-
-        //check left small right big
-    
-        return 1;
-    }
-
-    public static void comparing(String left, String right){
-        if(left.length()==1 && right.length()==1){
-            if(Integer.parseInt(left)>Integer.parseInt(right)){
-
+        if(rightArray.length==1 && leftArray.length>1){
+            int rightValue = Integer.parseInt(rightArray[0]);
+            for(int i = 0; i<leftArray.length;i++){
+                if(leftArray[i].length()==1){
+                    if(Integer.parseInt(leftArray[i])>rightValue){
+                        return 0;
+                    }
+                }else if(leftArray[i].contains("[")){
+                    value +=compare(leftArray[i], rightArray[0]);
+                }
             }
-        }else{
-            
-            String startLeft = left.substring(0, left.length());
-            String startRight = right.substring(0,right.length());
-            String[]leftArray = startLeft.split(" , ");
-            String[]rightArray = startRight.split(" , ");
-
-
         }
-
-
-
-
+        else if(leftArray.length==1 && rightArray.length>1){
+            int leftValue = Integer.parseInt(leftArray[0]);
+            for(int i = 0; i<rightArray.length;i++){
+                if(rightArray[i].length()==1){
+                    if(Integer.parseInt(rightArray[i])<leftValue){
+                        return 0;
+                    }
+                }else if(leftArray[i].contains("[")){
+                    value +=compare(leftArray[0], rightArray[i]);
+                }
+            }
+        }
+        else if(leftArray.length>rightArray.length && rightArray.length>1){
+            return 0;
+        }else{
+            for(int i = 0; i<leftArray.length;i++){
+                if(leftArray[i].length()==1 && rightArray[i].length()==1){
+                    if(Integer.parseInt(leftArray[i])<Integer.parseInt(rightArray[i])){
+                        return 0;
+                    }
+                }else if(leftArray[i].contains("[") || rightArray[i].contains("[")){
+                    value +=compare(leftArray[i], rightArray[i]);
+                }
+            }
+        }
+        value++;  
+        return value;
     }
-
-
-    
-
-
-
-
-
-
-
 }
